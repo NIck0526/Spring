@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	var xhr;
+	function startRequest(){
+		xhr = new XMLHttpRequest(); //sts, tern 플러그인
+		xhr.onreadystatechange = callback; //0
+		xhr.open("get", "searchById.do", true); //1
+		xhr.send(null); //1 ... 2,3 은 볼수 없당.	
+	}
+	function callback() {
+		if(xhr.readyState==4){
+			if(xhr.status==200){
+				var jsonData = JSON.parse(xhr.responseText); // jsonData가 어떻게 출력되어지는지...
+				alert(jsonData.person.name+", "+jsonData.person.address); // [Object Object]
+											// jasonData.controller에서 바인딩 된 이름.필드명
+			}
+		}
+	}
+</script>
+</head>
+<body>
+<h2>동기 비동기 통신 T</h2>
+<a href="synch.do">동기통신 gogo</a>
+<input type="button" value="비동기버튼" onclick="startRequest()">
+</body>
+</html>
