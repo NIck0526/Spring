@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boardMapper">
+	<insert id="write" parameterType="boardVO">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT springboard_upload_seq.nextVal FROM dual
+		</selectKey>
+		INSERT INTO springboard_upload (no, title, content, w_date, id,orgfilename, newfilename)
+		VALUES(#{no},#{title},#{content},sysdate,#{memberVO.id},
+		#{orgfilename}, #{newfilename})
+	</insert>
+	
+	<select id="selectByNoForDate" resultType="string" parameterType="int">
+		SELECT w_date FROM springboard_upload
+		WHERE no=#{value}
+	</select>
+	
+	<!-- 전체게시글보기를 위한 resultMap -->
+	<!-- jdbctype은 insert, update, delete의 경우 nullable column인 경우에만 필수적이다. -->
+	<resultMap type="boardVO" id="boardListRM">
+		<result property="no" column="no"/>
+		<result property="title" column="title"/>
+		<result property="count" column="count"/>
+		<result property="writeDate" column="w_date"/>
+		<result property="memberVO.name" column="name"/>
+	</resultMap>
+	
+	<select id="getBoardList" resultMap="boardListRM" parameterType="string">
+		SELECT no, title, count, w_date, name ,page FROM
+		(SELECT no, title, count, w_date, CEIL(rownum/5) page, name FROM
+		(SELECT no, title, count, to_char(w_date, 'YYYY.MM.DD') w_date, name
+		FROM springboard_upload s, member m
+		WHERE s.id =m.id
+		ORDER BY no DESC))
+		where page=#{value}
+	</select>
+	
+	<!-- 특정 no에 해당하는 상세글보는 resultaMap -->
+	<resultMap type="boardVO" id="boardRM" extends="boardListRM">
+		<result property="content" column="content"/>
+		<result property="memberVO.id" column="id"/>		
+		
+		<!-- fileupload시 추가 -->
+		<result property="orgfilename" column="orgfilename"/>
+		<result property="newfilename" column="newfilename"/>
+	</resultMap>
+	
+	
+	<select id="showContent" parameterType="string" resultMap="boardRM">
+		SELECT no, title, count, w_date, content, m.id, m.name,
+		orgfilename, newfilename		
+		FROM springboard_upload s, member m
+		WHERE s.id = m.id AND no=#{value}
+	</select>
+	
+	<delete id="deleteBoard" parameterType="string">
+			DELETE FROM springboard_upload WHERE no=#{value}
+	</delete>
+	
+	<update id="updateCount" parameterType="string">
+		UPDATE springboard_upload SET count=count+1 WHERE no=#{value}
+	</update>
+	
+	<update id="updateBoard" parameterType="boardVO">
+		UPDATE springboard_upload SET title=#{title}, content=#{content},
+		orgfilename=#{orgfilename}, newfilename=#{newfilename}
+		WHERE no=#{no}
+	</update>
+	
+	<!--  페이징 처리시 추가 -->
+	<select id="totalCount" resultType="int">
+		SELECT COUNT(-1) FROM springboard_upload
+	</select>
+</mapper>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
