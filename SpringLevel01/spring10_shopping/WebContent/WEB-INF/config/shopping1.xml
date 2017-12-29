@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+<!-- 1. dataSource 등록 :: API 빈 등록 -->
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+	<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:xe"></property>
+	<property name="username" value="hr"/>
+	<property name="password" value="hr"/>
+</bean>
+
+
+<!-- ViewResolver 등록 :: viewpage의 물리적인 위치정보를 저장 :: -->
+<!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<property name="prefix" value="WEB-INF/jsp/"/>
+	<property name="suffix" value=".jsp"></property>
+
+</bean> -->
+
+<!-- 2. Persistence Layer Bean 등록-->
+<bean id="itemDao" class="dao.ItemDaoImpl">
+	<property name="dataSource" ref="dataSource"/>
+</bean>
+
+
+
+<!-- 3. Service Layer Bean 등록  -->
+<bean name="/index.html" class="controller.IndexController"> 
+	<property name="shop" ref="shop"/>
+</bean>
+
+<bean name="/detail.html" class="controller.DetailController">
+	<property name="shop" ref="shop"/>
+</bean>
+
+
+</beans>

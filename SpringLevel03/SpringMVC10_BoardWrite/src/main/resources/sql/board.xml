@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boardMapper">
+	<insert id="write" parameterType="boardVO">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT springboard_seq.nextVal FROM dual
+		</selectKey>
+		INSERT INTO springboard (no, title, content, w_date, id)
+		VALUES(#{no},#{title},#{content},sysdate,#{memberVO.id})
+	</insert>
+	
+	<select id="selectByNoForDate" resultType="string" parameterType="int">
+		SELECT w_date FROM springboard
+		WHERE no=#{value}
+	</select
+	>
+	<!-- 전체 게시글 보기 -->
+	<!-- resultMap 세팅 -->
+	<resultMap type="boardVO" id="boardListRM">
+		<result property="no" column="no"/>
+		<result property="title" column="title"/>
+		<result property="count" column="count"/>
+		<result property="writeDate" column="w_date"/>
+		<result property="memberVO.name" column="name"/>
+	</resultMap>
+	
+	<select id="getBoardList" resultMap="boardListRM" parameterType="string">
+	
+	SELECT no, title, count, w_date, name, page FROM 
+	(SELECT no, title, count, w_date, name, CEIL(rownum/5) page FROM
+	(SELECT no, title, count, to_char(w_date, 'yyyy/mm/dd') w_date, name
+	FROM springboard s, member m
+	WHERE s.ID = m.ID
+	ORDER BY no DESC))
+	WHERE page=#{value}
+	</select>
+	
+	<!-- 특정 no에 해당하는 상세글 보는 resultMap -->
+	<resultMap type="boardVO" id="boardRM" extends="boardListRM">
+		<result property="content" column="content"/>
+		<result property="memberVO.id" column="id"/>
+	</resultMap>
+	
+	<select id="showContent" parameterType="string" resultMap="boardRM">
+		SELECT no, title, count, w_date, content, m.id, m.name
+		FROM springboard s, member m
+		WHERE s.id = m.id AND no=#{value}
+	</select>
+	
+	<!-- DELETE -->
+	<delete id="delete" parameterType="string">
+		DELETE FROM springboard
+		WHERE no = ${value}
+	</delete>
+	
+	<!-- UPDATE -->
+	<update id="updateCount" parameterType="string">
+		UPDATE springboard 
+		SET count=count+1 WHERE no=#{value}
+	</update>
+	
+	<update id="update" parameterType="boardVO">
+		UPDATE springboard 
+		SET title = #{title}, content=#{content}
+		WHERE no = #{no}
+	</update>
+	
+	<!-- 페이징 처리시 추가 -->
+	<select id="totalCount" resultType="int">
+		SELECT COUNT(-1) FROM springboard
+	</select>
+	
+</mapper>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

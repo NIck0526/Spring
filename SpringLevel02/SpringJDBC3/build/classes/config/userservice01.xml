@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- 빈 등록 :: DaoImpl -->
+<bean id="springJdbcUserDaoImpl01" class="spring.service.user.impl.SpringJdbcUserDaoImpl01">
+	<property name="dataSource" ref="dataSource"/> <!-- container 가 설정문서는 통으로 읽어서 다 연결되어있음  -->
+</bean>
+</beans>

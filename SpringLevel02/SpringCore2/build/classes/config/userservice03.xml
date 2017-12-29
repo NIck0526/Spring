@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+
+<!-- userservice02.properties 파일을 해당 설정문서로 와이어링 -->
+<context:property-placeholder location="classpath:config/userservice02.properties"/>
+<bean id="user08" class="spring.service.domain.User">
+	<property name="userId" value="${user.userId}"/>
+	<property name="age" value="${user.age}"/>
+	<property name="password" value="${user.password}"/>
+</bean>
+
+<!-- 
+${}을 가지고는 메타데이타 밖에 접근할 수 없다. == Spring 2.xxx 대 버전
+#{} 을 사용해야 완벽한 Wring이 가능하다 == Spring 3.xxx 대 버전
+ -->
+ 
+<!-- 완벽한 Wiring ?  -->
+<util:properties location="classpath:config/userservice03.properties" id="userP"/>
+<bean id="user09" class="spring.service.domain.User">
+	<property name="userId" value="#{userP['user.userId']}"/>
+	<property name="age" value="#{userP['user.age']}"/>
+	<property name="password" value="#{userP['user.password']}"/>
+</bean>
+
+<bean id="user10" class="spring.service.domain.User">
+	<property name="userId" value="10유저"/>
+	<property name="age" value="100"/>
+	<property name="password" value="1010"/>
+</bean>
+
+<bean id="user11" class="spring.service.domain.User">
+	<property name="userId" value="#{user10.userId}"/>
+	<property name="age" value="#{user10.age}"/>
+	<property name="password" value="#{user10.password}"/>
+</bean>
+
+<bean id="client" class="spring.service.domain.Client"/>
+	
+<bean id="user12" class="spring.service.domain.User">
+	<property name="userId" value="#{client.info[0]}"/> <!-- 조선  -->
+	<property name="age" value="#{client.age}"/> <!-- 100 -->
+	<property name="password" value="#{client.info[1]}"/> <!-- 의적  -->
+</bean>
+</beans>
+
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  sqlCode를 xml기반으로 메타데이타화 시킨 문서
+   1. namespace 속성을 반드시 줘야 한다.
+-->
+
+<mapper namespace="mysawonMapper">
+	<insert id="insertSawon" parameterType="sawon">
+		INSERT
+		INTO mysawon VALUES(
+			mysawon_seq.nextVal, #{id}, #{pwd}, #{name}, #{age}, sysdate <!-- sawon.getId(), sawon.getPwd(),  -->
+		) 
+	</insert>
+	<select id="selectAllSawon" resultType="sawon">
+		SELECT
+		num, id, name, age, to_char(hiredate, 'YYYY-MM-dd') hiredate
+		FROM mysawon ORDER BY num DESC
+	</select>
+</mapper>
+<!-- 
+
+SqlMapConfig.xml 파일은
+MyBatis 기술에서 가장 핵심이 되는 설정 문서이다.
+
+1. dbconn.properties 파일이 와이어링.
+2. environments 엘러먼트 안에서 디비관련 몯느 정보를 등록
+3. mappers 엘러먼트 안에서 sqlCode 메타데이터와 연결
+4. vo와 연결 . . . aliyas를 등록
+
+
+ -->
+

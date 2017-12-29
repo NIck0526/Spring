@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<properties resource="config/jdbc.properties"/>
+	
+	<!-- mapping05.xml 에서 reg_date 값을 null입력 
+		 null값을 지원하지 않기때문에 null을 허용하려면 jdbcTypeForNull 위한 세팅을
+		 해줘야 한다.
+		 이때 settings 태그의 위치가 중요하다.
+	-->
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/> <!-- 요건 대문자로!! -->
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="ibatis.services.domain.User" alias="user"/>
+	</typeAliases>
+
+		<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="UNPOOLED">
+				<property name="driver" value="${JDBC.Driver}"/>
+				<property name="url" value="${JDBC.ConnectionURL}"/>
+				<property name="username" value="${JDBC.Username}"/>
+				<property name="password" value="${JDBC.Password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+	 	<mapper resource="sql/mybatis-userservice-mapping.xml"/>
+		<mapper resource="sql/mybatis-userservice-mapping01.xml"/>
+		<mapper resource="sql/mybatis-userservice-mapping02.xml"/> 
+		<mapper resource="sql/mybatis-userservice-mapping03.xml"/> 
+		<mapper resource="sql/mybatis-userservice-mapping05.xml"/> 
+		<mapper resource="sql/mybatis-userservice-mapping07.xml"/>
+		<mapper resource="sql/mybatis-userservice-mapping08.xml"/>
+		<mapper resource="sql/mybatis-userservice-mapping10.xml"/> 
+		<!-- 나중에 이 부분에 여러개의 mapper들이 등록된다. -->
+	</mappers>
+</configuration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

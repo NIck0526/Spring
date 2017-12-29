@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!-- 빈 등록 :: 값 주입 :: 생성자, setter -->
+	<bean id="messageBean" class="com.kosta.service.impl.MemberServiceImpl">
+		<constructor-arg value="174"/> <!-- 생성자 값 주입 -->
+		<property name="name" value="하바리"/> <!-- messageBean.setName("하바리") = setter 값 주입 -->
+		<property name="date" value="2017/11/01"></property>
+	</bean>
+</beans>

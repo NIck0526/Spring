@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="User01">
+<!--  
+1.
+	#{value} :: hashMap 문법이라고 한다.
+				단순한 value값을 입력할 때 사용하는 문법
+				vo의 getter와 상관없이 단순한 파라미터 값을 주입받을때 사용한다.
+	
+	#{userId} :: vo의 getter()와 연결된다.
+	
+	#{value} | #{userId} 둘의 차이점은 정확히 알고 가자
+	
+2. parameterType :: 쿼리문이 수행될때 인자값으로 전달되는 값을 갖는 객체를 선언
+					MyBatis에서는 parameterMap은 비권장 사항이다.
+					
+3. resultType :: 쿼리문이 수행되고 나서 리턴되는 결과값의 객체를 선언
+				이후에는 resultMap을 사용할 것이다.
+				jdbc 프리엠워크의 정확도를 높이는데 역할을 한다.			
+
+ -->	
+	<select id="getUserList" resultType="user">
+		SELECT
+		user_id AS userId,
+		user_name AS userName,
+		password AS password,
+		age AS age,
+		grade AS grade,
+		reg_date AS regDate
+		FROM users
+	</select>
+
+	<select id="getUser" parameterType="string" resultType="user"> <!-- alias는 무조건 소문자로 하는것이 원칙  -->
+		SELECT
+		user_id AS userId,
+		user_name AS userName,
+		password AS password,
+		age AS age,
+		grade AS grade,
+		reg_date AS regDate
+		FROM users
+		WHERE user_id = #{value}
+	</select>
+	
+	<!-- id가 user03이고 password가 user03인 사람의 이름을 검색하는 쿼리문  -->
+	<select id="findUserId" parameterType="user" resultType="string"> <!-- 타입이 애매할땐 alias를 parameterType으로 준다. -->
+		SELECT
+		user_name AS userName
+		FROM users
+		WHERE user_id = #{userId}
+		AND password = #{password}
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+<!-- 1. member, product , advice 라는 이름으로 빈 생성 -->
+<bean id="member" class="solv2.MemberService"/>
+<bean id="product" class="solv2.ProductService"/>
+<bean id="advice" class="solv2.ServiceAdvice"/>
+
+<!-- 2. advice의 어떤 메소드가 target의 어떤 메소드로 어떻게 위빙되는지를 등록 
+	aopConfiguration
+-->
+<aop:config>
+	<aop:aspect id="loggingAspect" ref="advice">
+		<aop:pointcut expression="within(solv2..*)" id="aroundPC"/>
+		<aop:around method="logPush" pointcut-ref="aroundPC"/>
+	</aop:aspect>
+</aop:config>
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+
+<!-- aop 스키마 사용
+     aspect - j식 표현법을 사용...within()...aop3 패키지 안에 있는 모든 메소드에 위빙되도록
+ -->
+ 
+<!-- 값 주입  -->
+<bean id="target" class="api3.MessageBeanImpl">
+	<property name="name" value="스프링"/>
+</bean>
+
+<!-- advice 빈 -->
+<bean id="advice" class="api3.LoggingAdvice"/>
+
+<!-- aop :: Adviosr 생성  -->
+ <aop:config>
+ 	<aop:aspect id="logAspect" ref="advice">
+ 		<aop:pointcut expression="execution(void sayHello())" id="logPointCut"/> 
+ 				 <!-- expression="within(api3..*)"  -->					
+ 		<aop:around method="timeLog" pointcut-ref="logPointCut"/>
+ 	</aop:aspect>
+ </aop:config>
+ 
+ 
+</beans>

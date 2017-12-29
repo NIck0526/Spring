@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+
+<!-- 
+	annotation 사용 :: aop:config 부분이 통으로 날라간다. 
+	사라지는 부분이 소스 코드에 매핑되어 진다.
+ -->
+ 
+<!-- 값 주입  -->
+<bean id="target" class="api4.MessageBeanImpl">
+	<property name="name" value="스프링"/>
+</bean>
+
+<!-- advice 빈 -->
+<bean id="advice" class="api4.LoggingAdvice"/>
+
+<aop:aspectj-autoproxy></aop:aspectj-autoproxy> 
+ 
+</beans>

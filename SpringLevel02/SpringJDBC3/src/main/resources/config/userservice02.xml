@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- 빈 등록 :: DaoImpl -->
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+	<property name="dataSource" ref="dataSource"/>
+</bean>
+<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+	<!-- <property name="dataSource" ref="dataSource"/> -->
+	<constructor-arg ref="dataSource"/>
+</bean>
+
+<bean id="springJdbcUserDaoImpl02" class="spring.service.user.impl.SpringJdbcUserDaoImpl02">
+	<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	<property name="namedParameterJdbcTempalte" ref="namedParameterJdbcTemplate"/>
+</bean>
+</beans>

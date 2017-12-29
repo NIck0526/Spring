@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- sql 구문의 모듈화, 재사용성을 높이는 태그 sql -->
+<mapper namespace="User10">
+	<resultMap type="user" id="userSelectMap">
+		<result property="userId" column="user_id" jdbcType="VARCHAR"/>
+		<result property="userName" column="user_name" jdbcType="VARCHAR"/>
+		<result property="password" column="password" jdbcType="VARCHAR"/>
+		<result property="age" column="age" jdbcType="NUMERIC"/>
+		<result property="grade" column="grade" jdbcType="INTEGER"/>
+		<result property="regDate" column="reg_date" jdbcType="DATE"/>
+	</resultMap>
+	
+	<!--  insert -->
+	<insert id="addUser" parameterType="user">
+		INSERT
+		INTO users(<include refid="insert-column"/>)
+		VALUES(
+			#{userId},
+			#{userName},
+			#{password},
+			#{age},
+			#{grade},
+			#{regDate} 
+			)
+	</insert>
+	
+	<!--  update -->
+	<update id="updateUser" parameterType="user">
+		UPDATE 
+		users
+		SET user_name=#{userName}
+		WHERE user_id=#{userId}
+	</update>
+	
+	<!--  delete -->
+	<delete id="removeUser" parameterType="string">
+		DELETE
+		FROM users
+		WHERE user_id=#{value}
+	</delete>		
+	
+	<!--  sql 구문의 모듈화-->
+	<sql id="select-users">
+		SELECT
+		user_id, user_name, password, age, grade, reg_date
+		FROM users
+	</sql>
+	<sql id="orderby-userid-desc">
+		ORDER BY user_id DESC
+	</sql>
+	<sql id="insert-column">
+		user_id, user_name, password, age, grade, reg_date
+	</sql>
+	
+	<!-- Static Document Query -->
+	<select id="getUser" parameterType="user" resultMap="userSelectMap">
+		<include refid="select-users"/>
+		WHERE user_id=#{userId}
+	</select>
+	
+	<!-- Dynamic Document Query -->
+	<select id="getUserList" parameterType="user" resultMap="userSelectMap">
+		SELECT
+		user_id, user_name, password, age, grade, reg_date
+		FROM users
+		<where>
+			<if test="userName != null">
+				user_name LIKE #{userName}
+			</if>
+			<if test="age != null">
+				OR age LIKE #{age}
+			</if>
+		</where>
+			<include refid="orderby-userid-desc"/>		
+	</select>	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

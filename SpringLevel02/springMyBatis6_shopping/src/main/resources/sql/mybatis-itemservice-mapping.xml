@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- sql 구문의 모듈화, 재사용성을 높이는 태그 sql -->
+<mapper namespace="itemMapper">
+	<resultMap type="item" id="itemSelectMap">
+		<result property="itemId" column="itemId" jdbcType="INTEGER"/>
+		<result property="itemName" column="itemName" jdbcType="VARCHAR"/>
+		<result property="price" column="price" jdbcType="INTEGER"/>
+		<result property="description" column="description" jdbcType="VARCHAR"/>
+		<result property="pictureUrl" column="pictureUrl" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	
+	<!--  sql 구문의 모듈화-->
+	<sql id="select-items">
+		SELECT
+		itemId, itemName, price, description, pictureUrl
+		FROM item
+	</sql>
+	
+	
+	
+	
+	<!-- Static Document Query -->
+	<select id="findItem" parameterType="item" resultMap="itemSelectMap">
+		<include refid="select-items"/>
+		WHERE itemId= #{itemId}
+	</select>
+	
+	<select id="findItemList" resultMap="itemSelectMap">
+		<include refid="select-items"/>
+		
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

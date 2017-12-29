@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- DataSource, JdbcTemplate, DaoImpl -->
+
+<!-- 1. dataSource 등록 :: API 빈 등록 -->
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+	<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:xe"></property>
+	<property name="username" value="hr"/>
+	<property name="password" value="hr"/>
+</bean>
+
+
+<!-- 3. DaoImpl 빈 등록 :: User Definition Bean -->
+<bean id="dao" class="jdbc2.MemberDaoImpl">	
+	<property name="dataSource" ref="dataSource"/>
+</bean>
+
+</beans>
